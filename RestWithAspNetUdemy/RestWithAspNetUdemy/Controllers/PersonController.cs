@@ -1,104 +1,68 @@
 using Microsoft.AspNetCore.Mvc;
+using RestWithAspNetUdemy.Model;
+using RestWithAspNetUdemy.Services;
 
 namespace RestWithAspNetUdemy.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class CalculatorController : ControllerBase
+[Route("api/[controller]")]
+public class PersonController : ControllerBase
 {
-    private readonly ILogger<CalculatorController> _logger;
+    private readonly IPersonService _personService;
+    private readonly ILogger<PersonController> _logger;
 
-    public CalculatorController(ILogger<CalculatorController> logger)
+    public PersonController(ILogger<PersonController> logger, IPersonService personService)
     {
         _logger = logger;
+        _personService = personService;
     }
 
-    [HttpGet("sum/{firstNumber}/{secondNumber}")]
-    public IActionResult GetSum(string firstNumber, string secondNumber)
+    [HttpGet]
+
+    public IActionResult Get()
     {
-        if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-        {
-            var sum = Convert.ToDecimal(firstNumber) + Convert.ToDecimal(secondNumber);
-
-            return Ok(sum.ToString());
-        }
-
-        return BadRequest("InvalidInput");
+        return Ok(_personService.FindAll());
     }
 
-    [HttpGet("multiply/{firstNumber}/{secondNumber}")]
-    public IActionResult GetMultiply(string firstNumber, string secondNumber)
+
+    [HttpGet("{id}")]
+
+    public IActionResult Get(long id)
     {
-        if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-        {
-            var sum = Convert.ToDecimal(firstNumber) * Convert.ToDecimal(secondNumber);
+        var person = _personService.FindById(id);
 
-            return Ok(sum.ToString());
-        }
+        if (person == null) return NotFound();
 
-        return BadRequest("InvalidInput");
+        return Ok(person);
     }
 
-    [HttpGet("subtract/{firstNumber}/{secondNumber}")]
-    public IActionResult GetSubtraction(string firstNumber, string secondNumber)
+    [HttpPost]
+
+    public IActionResult Post([FromBody] Person person)
     {
-        if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-        {
-            var sum = Convert.ToDecimal(firstNumber) -  Convert.ToDecimal(secondNumber);
+        if (person == null) return BadRequest();
 
-            return Ok(sum.ToString());
-        }
 
-        return BadRequest("InvalidInput");
+        return Ok(_personService.Create(person));
     }
 
-    [HttpGet("mean/{firstNumber}/{secondNumber}")]
-    public IActionResult GetMean(string firstNumber, string secondNumber)
+
+    [HttpPut]
+
+    public IActionResult Put([FromBody] Person person)
     {
-        if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-        {
-            var sum = (Convert.ToDecimal(firstNumber) + Convert.ToDecimal(secondNumber))/2;
+        if (person == null) return BadRequest();
 
-            return Ok(sum.ToString());
-        }
 
-        return BadRequest("InvalidInput");
+        return Ok(_personService.Update(person));
     }
 
-    [HttpGet("squareRoot/{number}")]
-    public IActionResult GetSquareRoot(string number)
+    [HttpDelete("{id}")]
+
+    public IActionResult Delete(long id)
     {
-        if (IsNumeric(number))
-        {
-            var sum = Math.Sqrt(Convert.ToDouble(number));
+        _personService.Delete(id);
 
-            return Ok(sum.ToString());
-        }
-
-        return BadRequest("InvalidInput");
-    }
-
-    [HttpGet("division/{firstNumber}/{secondNumber}")]
-    public IActionResult GetDivision(string firstNumber, string secondNumber)
-    {
-        if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
-        {
-            var sum = (Convert.ToDecimal(firstNumber)/ Convert.ToDecimal(secondNumber));
-
-            return Ok(sum.ToString());
-        }
-
-        return BadRequest("InvalidInput");
-    }
-
-    private bool IsNumeric(string strNumber)
-    {
-        double number;
-
-        bool isNumber = double.TryParse(strNumber, System.Globalization.NumberStyles.Any,
-             System.Globalization.NumberFormatInfo.InvariantInfo,
-             out number);
-
-        return isNumber;
+        return Ok();
     }
 }

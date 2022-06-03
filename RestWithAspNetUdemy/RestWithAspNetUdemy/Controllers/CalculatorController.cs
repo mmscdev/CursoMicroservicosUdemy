@@ -83,7 +83,11 @@ public class CalculatorController : ControllerBase
     {
         if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
         {
-            var sum = (Convert.ToDecimal(firstNumber)/ Convert.ToDecimal(secondNumber));
+            var divisor = Convert.ToDecimal(secondNumber);
+
+            if(divisor == 0) return BadRequest("InvalidInput");
+
+            var sum = (Convert.ToDecimal(firstNumber)/ divisor);
 
             return Ok(sum.ToString());
         }

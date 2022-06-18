@@ -2,6 +2,7 @@
 using MM.GeekShopping.Product.WebApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MM.geekShopping.Product.WebApi.Migrations
 {
     [DbContext(typeof(BdMySqlContext))]
-    partial class BdMySqlContextModelSnapshot : ModelSnapshot
+    [Migration("20220618225612_seed-product")]
+    partial class seedproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

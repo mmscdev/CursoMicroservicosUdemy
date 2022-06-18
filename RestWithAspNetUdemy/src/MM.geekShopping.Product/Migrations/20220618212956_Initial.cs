@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MM.GeekShopping.Product.API.Migrations
+#nullable disable
+
+namespace MM.geekShopping.Product.WebApi.Migrations
 {
     public partial class Initial : Migration
     {
@@ -19,11 +21,11 @@ namespace MM.GeekShopping.Product.API.Migrations
                     name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true)
+                    description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    categoryName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    categoryName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    imageUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
+                    imageUrl = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>

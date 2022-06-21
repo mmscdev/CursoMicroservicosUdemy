@@ -1,32 +1,75 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MM.GeekShopping.Web.Models;
-using System.Diagnostics;
+using MM.GeekShopping.Web.Services.IServices;
 
 namespace MM.GeekShopping.Web.Controllers
 {
-    public class HomeController : Controller
+
+    public class ProductController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public ProductController(IProductService productService)
         {
-            _logger = logger;
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> ProductIndex()
+        {
+            var products = await _productService.FindAllProducts();
+            return View(products);
+        }
+
+        public async Task<IActionResult> ProductCreate()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> ProductCreate(ProductModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var response = await _productService.CreateProduct(model);
+                if (response != null) return RedirectToAction(
+                     nameof(ProductIndex));
+            }
+            return View(model);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> ProductUpdate(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var model = await _productService.FindProductById(id);
+            if (model != null) return View(model);
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductUpdate(ProductModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _productService.UpdateProduct(model);
+                if (response != null) return RedirectToAction(
+                     nameof(ProductIndex));
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> ProductDelete(int id)
+        {
+            var model = await _productService.FindProductById(id);
+            if (model != null) return View(model);
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ProductDelete(ProductModel model)
+        {
+            var response = await _productService.DeleteProductById(model.Id);
+            if (response) return RedirectToAction(
+                    nameof(ProductIndex));
+            return View(model);
         }
     }
 }

@@ -18,7 +18,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
         .AddEntityFrameworkStores<MySQLContext>()
         .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddIdentityServer(opt => {
     opt.Events.RaiseSuccessEvents = true;
@@ -36,8 +35,9 @@ builder.Services.AddIdentityServer(opt => {
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -49,6 +49,12 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider.GetService<IDbInitializer>();
+    initializer.Initialize();
+}
 
 app.MapControllerRoute(
     name: "default",

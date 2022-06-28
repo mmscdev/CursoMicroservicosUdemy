@@ -1,32 +1,92 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MM.GeekShopping.Web.Models;
-using System.Diagnostics;
+﻿using GeekShopping.Web.Models;
+using GeekShopping.Web.Services.IServices;
+using GeekShopping.Web.Utils;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MM.GeekShopping.Web.Controllers
+namespace GeekShopping.Web.Controllers
 {
-    public class HomeController : Controller
+    public class ProductController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public ProductController(IProductService productService)
         {
-            _logger = logger;
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> ProductIndex()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var products = await _productService.FindAllProducts(token);
+            return View(products);
+        }
+
+        public async Task<IActionResult> ProductCreate()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ProductCreate(ProductModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var token = await HttpContext.GetTokenAsync("access_token");
+                var response = await _productService.CreateProduct(model, token);
+                if (response != null) return RedirectToAction(
+                     nameof(ProductIndex));
+            }
+            return View(model);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> ProductUpdate(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var model = await _productService.FindProductById(id, token);
+            if (model != null) return View(model);
+            return NotFound();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ProductUpdate(ProductModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var token = await HttpContext.GetTokenAsync("access_token");
+                var response = await _productService.UpdateProduct(model, token);
+                if (response != null) return RedirectToAction(
+                     nameof(ProductIndex));
+            }
+            return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> ProductDelete(int id)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var model = await _productService.FindProductById(id, token);
+            if (model != null) return View(model);
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Role.Admin)]
+        public async Task<IActionResult> ProductDelete(ProductModel model)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.DeleteProductById(model.Id, token);
+            if (response) return RedirectToAction(
+                    nameof(ProductIndex));
+            return View(model);
         }
     }
 }

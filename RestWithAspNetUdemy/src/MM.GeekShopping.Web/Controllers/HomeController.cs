@@ -1,75 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MM.GeekShopping.Web.Models;
-using MM.GeekShopping.Web.Services.IServices;
+﻿using GeekShopping.Web.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MM.GeekShopping.Web.Controllers
+namespace GeekShopping.Web.Controllers
 {
-
-    public class ProductController : Controller
+    public class HomeController : Controller
     {
-        private readonly IProductService _productService;
+        private readonly ILogger<HomeController> _logger;
 
-        public ProductController(IProductService productService)
+        public HomeController(ILogger<HomeController> logger)
         {
-            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _logger = logger;
         }
 
-        public async Task<IActionResult> ProductIndex()
-        {
-            var products = await _productService.FindAllProducts();
-            return View(products);
-        }
-
-        public async Task<IActionResult> ProductCreate()
+        public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ProductCreate(ProductModel model)
+        public IActionResult Privacy()
         {
-            if (ModelState.IsValid)
-            {
-                var response = await _productService.CreateProduct(model);
-                if (response != null) return RedirectToAction(
-                     nameof(ProductIndex));
-            }
-            return View(model);
+            return View();
         }
 
-        public async Task<IActionResult> ProductUpdate(int id)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            var model = await _productService.FindProductById(id);
-            if (model != null) return View(model);
-            return NotFound();
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ProductUpdate(ProductModel model)
+        [Authorize]
+        public async Task<IActionResult> Login()
         {
-            if (ModelState.IsValid)
-            {
-                var response = await _productService.UpdateProduct(model);
-                if (response != null) return RedirectToAction(
-                     nameof(ProductIndex));
-            }
-            return View(model);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            return RedirectToAction(nameof(Index));
         }
-
-        public async Task<IActionResult> ProductDelete(int id)
+        public IActionResult Logout()
         {
-            var model = await _productService.FindProductById(id);
-            if (model != null) return View(model);
-            return NotFound();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ProductDelete(ProductModel model)
-        {
-            var response = await _productService.DeleteProductById(model.Id);
-            if (response) return RedirectToAction(
-                    nameof(ProductIndex));
-            return View(model);
+            return SignOut("Cookies", "oidc");
         }
     }
 }

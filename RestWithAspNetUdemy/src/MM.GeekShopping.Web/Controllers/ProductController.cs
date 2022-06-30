@@ -4,8 +4,12 @@ using GeekShopping.Web.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MM.GeekShopping.Web.Controllers
+namespace GeekShopping.Web.Controllers
 {
     public class ProductController : Controller
     {
@@ -16,11 +20,9 @@ namespace MM.GeekShopping.Web.Controllers
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
-        [Authorize]
         public async Task<IActionResult> ProductIndex()
         {
-            var token = await HttpContext.GetTokenAsync("access_token");
-            var products = await _productService.FindAllProducts(token);
+            var products = await _productService.FindAllProducts("");
             return View(products);
         }
 

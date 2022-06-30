@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>ca6594f6-4667-48e5-9dab-472af6cb7e25</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Home\Details.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
     <None Include="Views\Product\ProductCreate.cshtml" />
@@ -19,7 +21,21 @@
     <None Include="Views\Product\ProductUpdate.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Views\Home\Details.cshtml" />
+    <None Include="Views\Views\Home\Index.cshtml" />
+    <None Include="Views\Views\Home\Privacy.cshtml" />
+    <None Include="Views\Views\Product\ProductCreate.cshtml" />
+    <None Include="Views\Views\Product\ProductDelete.cshtml" />
+    <None Include="Views\Views\Product\ProductIndex.cshtml" />
+    <None Include="Views\Views\Product\ProductUpdate.cshtml" />
+    <None Include="Views\Views\Shared\Error.cshtml" />
+    <None Include="Views\Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Views\_ViewImports.cshtml" />
+    <None Include="Views\Views\_ViewStart.cshtml" />
     <None Include="Views\_ViewImports.cshtml" />
     <None Include="Views\_ViewStart.cshtml" />
     <None Include="wwwroot\js\site.js" />
@@ -62,6 +78,13 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.20.0" />
   </ItemGroup>
 
 </Project>

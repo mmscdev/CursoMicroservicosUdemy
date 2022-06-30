@@ -1,9 +1,10 @@
 ﻿@model GeekShopping.Web.Models.ProductModel
 
-<form asp-action="ProductCreate">
+<form asp-action="ProductUpdate">
+    <input asp-for="Id" hidden>
     <br/>
     <div class="container border p-3">
-        <h1 class="text-primary">Create Product</h1>
+        <h1 class="text-primary">Update Product</h1>
 
         <hr/>
         <div class="row">
@@ -50,12 +51,12 @@
             </div>
 
             <div class="col-5">
-                <input type="submit" value="Create" class="btn btn-success form-control" />
+                <input type="submit" value="Update" class="btn btn-success form-control" />
             </div>
         </div>
     </div>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial">
 }

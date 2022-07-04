@@ -43,14 +43,19 @@ namespace GeekShopping.CartAPI.Repository
 
         public async Task<CartVO> FindCartByUserId(string userId)
         {
+            var headers = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+
             Cart cart = new()
             {
-                CartHeader = await _context.CartHeaders
-                    .FirstOrDefaultAsync(c => c.UserId == userId),
+                CartHeader = headers
             };
+
+            var ids = _context.CartHeaders.Where(c => c.UserId == userId).Select(_ => _.Id);
+
             cart.CartDetails = _context.CartDetails
-                .Where(c => c.CartHeaderId == cart.CartHeader.Id)
+                .Where(c => ids.Contains(c.CartHeaderId))
                     .Include(c => c.Product);
+
             return _mapper.Map<CartVO>(cart);
         }
 
@@ -119,13 +124,13 @@ namespace GeekShopping.CartAPI.Repository
                 //If CartHeader is not null
                 //Check if CartDetails has same product
                 var cartDetail = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                    p => p.ProductId == vo.CartDetails.FirstOrDefault().ProductId &&
+                    p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
                     p.CartHeaderId == cartHeader.Id);
 
                 if (cartDetail == null)
                 {
                     //Create CartDetails
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
                     _context.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();

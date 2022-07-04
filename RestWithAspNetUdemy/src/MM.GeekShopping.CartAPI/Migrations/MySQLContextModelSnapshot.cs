@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
-namespace MM.GeekShopping.CartAPI.Migrations
+namespace GeekShopping.CartAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
     partial class MySQLContextModelSnapshot : ModelSnapshot
@@ -15,10 +13,10 @@ namespace MM.GeekShopping.CartAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "6.0.0-preview.6.21352.1");
 
-            modelBuilder.Entity("MM.GeekShopping.CartAPI.Model.CartDetail", b =>
+            modelBuilder.Entity("GeekShopping.CartAPI.Model.CartDetail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +42,7 @@ namespace MM.GeekShopping.CartAPI.Migrations
                     b.ToTable("cart_detail");
                 });
 
-            modelBuilder.Entity("MM.GeekShopping.CartAPI.Model.CartHeader", b =>
+            modelBuilder.Entity("GeekShopping.CartAPI.Model.CartHeader", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,12 +50,10 @@ namespace MM.GeekShopping.CartAPI.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("CouponCode")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("coupon_code");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("user_id");
 
@@ -66,26 +62,23 @@ namespace MM.GeekShopping.CartAPI.Migrations
                     b.ToTable("cart_header");
                 });
 
-            modelBuilder.Entity("MM.GeekShopping.CartAPI.Model.Product", b =>
+            modelBuilder.Entity("GeekShopping.CartAPI.Model.Product", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("category_name");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)")
                         .HasColumnName("description");
 
                     b.Property<string>("ImageURL")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)")
                         .HasColumnName("image_url");
@@ -105,15 +98,15 @@ namespace MM.GeekShopping.CartAPI.Migrations
                     b.ToTable("product");
                 });
 
-            modelBuilder.Entity("MM.GeekShopping.CartAPI.Model.CartDetail", b =>
+            modelBuilder.Entity("GeekShopping.CartAPI.Model.CartDetail", b =>
                 {
-                    b.HasOne("MM.GeekShopping.CartAPI.Model.CartHeader", "CartHeader")
+                    b.HasOne("GeekShopping.CartAPI.Model.CartHeader", "CartHeader")
                         .WithMany()
                         .HasForeignKey("CartHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MM.GeekShopping.CartAPI.Model.Product", "Product")
+                    b.HasOne("GeekShopping.CartAPI.Model.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)

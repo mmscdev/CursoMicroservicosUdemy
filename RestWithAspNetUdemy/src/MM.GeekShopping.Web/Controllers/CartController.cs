@@ -39,8 +39,7 @@ namespace GeekShopping.Web.Controllers
             var token = await HttpContext.GetTokenAsync("access_token");
             var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value;
 
-            var x = new CouponViewModel2() { Coupon = model.CartHeader.CouponCode,UserId = model.CartHeader.UserId  };
-            var response = await _cartService.ApplyCoupon(x, token);
+            var response = await _cartService.ApplyCoupon(model, token);
 
             if (response)
             {
@@ -83,6 +82,26 @@ namespace GeekShopping.Web.Controllers
         public async Task<IActionResult> Checkout()
         {
             return View(await FindUserCart());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CartViewModel model)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+
+            var response = await _cartService.Checkout(model.CartHeader, token);
+
+            if (response != null)
+            {
+                return RedirectToAction(nameof(Confirmation));
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Confirmation()
+        {
+            return View();
         }
 
         private async Task<CartViewModel> FindUserCart()

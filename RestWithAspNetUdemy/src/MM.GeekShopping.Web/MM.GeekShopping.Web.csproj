@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Include="Views\Cart\CartIndex.cshtml" />
+    <None Include="Views\Cart\Checkout.cshtml" />
     <None Include="Views\Home\Details.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
@@ -24,6 +25,9 @@
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\Views\Cart\CartIndex.cshtml" />
+    <None Include="Views\Views\Cart\Checkout.cshtml" />
+    <None Include="Views\Views\Cart\Confirmation.cshtml" />
     <None Include="Views\Views\Home\Details.cshtml" />
     <None Include="Views\Views\Home\Index.cshtml" />
     <None Include="Views\Views\Home\Privacy.cshtml" />

@@ -66,19 +66,14 @@ namespace GeekShopping.CartAPI.Repository
 
         public async Task<CartVO> FindCartByUserId(string userId)
         {
-            var headers = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
-
             Cart cart = new()
             {
-                CartHeader = headers
+                CartHeader = await _context.CartHeaders
+                    .FirstOrDefaultAsync(c => c.UserId == userId),
             };
-
-            var ids = _context.CartHeaders.Where(c => c.UserId == userId).Select(_ => _.Id);
-
             cart.CartDetails = _context.CartDetails
-                .Where(c => ids.Contains(c.CartHeaderId))
+                .Where(c => c.CartHeaderId == cart.CartHeader.Id)
                     .Include(c => c.Product);
-
             return _mapper.Map<CartVO>(cart);
         }
 

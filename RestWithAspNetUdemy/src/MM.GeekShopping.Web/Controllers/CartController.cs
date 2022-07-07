@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeekShopping.Web.Controllers
@@ -31,7 +32,7 @@ namespace GeekShopping.Web.Controllers
         {
             return View(await FindUserCart());
         }
-        
+
         [HttpPost]
         [ActionName("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon(CartViewModel model)
@@ -47,7 +48,7 @@ namespace GeekShopping.Web.Controllers
             }
             return View();
         }
-        
+
         [HttpPost]
         [ActionName("RemoveCoupon")]
         public async Task<IActionResult> RemoveCoupon()
@@ -71,7 +72,7 @@ namespace GeekShopping.Web.Controllers
 
             var response = await _cartService.RemoveFromCart(id, token);
 
-            if(response)
+            if (response)
             {
                 return RedirectToAction(nameof(CartIndex));
             }
@@ -89,7 +90,24 @@ namespace GeekShopping.Web.Controllers
         {
             var token = await HttpContext.GetTokenAsync("access_token");
 
-            var response = await _cartService.Checkout(model.CartHeader, token);
+            var dto = new CheckoutHeaderVO
+            {
+                CartDetails = new List<CartDetailViewModel>(),
+                CardNumber = model.CartHeader.CardNumber,
+                CouponCode = model.CartHeader.CouponCode,
+                FirstName = model.CartHeader.FirstName,
+                LastName = model.CartHeader.LastName,
+                ExpiryMothYear = model.CartHeader.ExpiryMothYear,
+                CVV = model.CartHeader.CVV,
+                DiscountAmount = model.CartHeader.DiscountAmount,
+                PurchaseAmount = model.CartHeader.PurchaseAmount,
+                DateTime = model.CartHeader.DateTime,
+                Phone = model.CartHeader.Phone,
+                Email = model.CartHeader.Email,
+                UserId = model.CartHeader.UserId
+            };
+
+            var response = await _cartService.Checkout(dto, token);
 
             if (response != null)
             {

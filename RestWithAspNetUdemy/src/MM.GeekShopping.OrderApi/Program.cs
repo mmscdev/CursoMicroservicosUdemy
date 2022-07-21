@@ -1,3 +1,4 @@
+using GeekShopping.OrderAPI.MessageConsumer;
 using GeekShopping.OrderAPI.Model.Context;
 using GeekShopping.OrderAPI.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,15 @@ builder.Services.AddDbContext<MySQLContext>(options => options.
             new MySqlServerVersion(
                 new Version(8, 0, 5))));
 
-builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+var builder2 = new DbContextOptionsBuilder<MySQLContext>();
+
+builder2.UseMySql(connection,
+            new MySqlServerVersion(
+                new Version(8, 0, 5)));
+builder.Services.AddSingleton(new OrderRepository(builder2.Options));
 
 builder.Services.AddControllers();
-//builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
+builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

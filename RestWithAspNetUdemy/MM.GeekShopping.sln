@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MM.GeekShopping.CouponAPI",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{6D35EB70-8D2A-4756-B6B4-A75F2CC4E311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShopping.MessageBus", "src\GeekShopping.MessageBus\GeekShopping.MessageBus.csproj", "{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShopping.MessageBus", "src\GeekShopping.MessageBus\GeekShopping.MessageBus.csproj", "{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MM.GeekShopping.OrderApi", "src\MM.GeekShopping.OrderApi\MM.GeekShopping.OrderApi.csproj", "{4005A50E-7930-4F3E-9E90-7E177E1DDBE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4005A50E-7930-4F3E-9E90-7E177E1DDBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4005A50E-7930-4F3E-9E90-7E177E1DDBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4005A50E-7930-4F3E-9E90-7E177E1DDBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4005A50E-7930-4F3E-9E90-7E177E1DDBE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{5597994C-B8C2-4712-9935-D41089BA7BA1} = {A23A3A33-4446-4AF6-87CB-B74D861E2FA5}
 		{52FC549F-D9A1-4648-970B-BF43E982FF43} = {A23A3A33-4446-4AF6-87CB-B74D861E2FA5}
 		{8DFCE8B9-2D4B-47CE-9F87-37B8DBB17A72} = {6D35EB70-8D2A-4756-B6B4-A75F2CC4E311}
+		{4005A50E-7930-4F3E-9E90-7E177E1DDBE3} = {A23A3A33-4446-4AF6-87CB-B74D861E2FA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F46FE76-6232-4690-896C-F2C6B1354826}

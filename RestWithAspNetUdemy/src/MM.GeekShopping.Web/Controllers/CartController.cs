@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GeekShopping.Web.Controllers
@@ -32,7 +31,7 @@ namespace GeekShopping.Web.Controllers
         {
             return View(await FindUserCart());
         }
-
+        
         [HttpPost]
         [ActionName("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon(CartViewModel model)
@@ -48,7 +47,7 @@ namespace GeekShopping.Web.Controllers
             }
             return View();
         }
-
+        
         [HttpPost]
         [ActionName("RemoveCoupon")]
         public async Task<IActionResult> RemoveCoupon()
@@ -72,7 +71,7 @@ namespace GeekShopping.Web.Controllers
 
             var response = await _cartService.RemoveFromCart(id, token);
 
-            if (response)
+            if(response)
             {
                 return RedirectToAction(nameof(CartIndex));
             }
@@ -109,7 +108,12 @@ namespace GeekShopping.Web.Controllers
 
             var response = await _cartService.Checkout(dto, token);
 
-            if (response != null)
+            if (response != null && response.GetType() == typeof(string))
+            {
+                TempData["Error"] = response;
+                return RedirectToAction(nameof(Checkout));
+            }
+            else if (response != null)
             {
                 return RedirectToAction(nameof(Confirmation));
             }

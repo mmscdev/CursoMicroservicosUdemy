@@ -1,7 +1,7 @@
 ﻿using GeekShopping.OrderAPI.Model;
 using System.Threading.Tasks;
 
-namespace GeekShopping.OrderAPI.Repository
+namespace GeekShopping.CartAPI.Repository
 {
     public interface IOrderRepository
     {

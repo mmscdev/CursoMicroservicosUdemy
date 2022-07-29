@@ -88,7 +88,7 @@ namespace GeekShopping.Web.Controllers
             {
                 CartDetails = new List<CartDetailViewModel>(),
                 CardNumber = model.CartHeader.CardNumber,
-                CouponCode = model.CartHeader.CouponCode,
+                CouponCode = model.CartHeader.CouponCode ?? String.Empty,
                 FirstName = model.CartHeader.FirstName,
                 LastName = model.CartHeader.LastName,
                 ExpiryMothYear = model.CartHeader.ExpiryMothYear,

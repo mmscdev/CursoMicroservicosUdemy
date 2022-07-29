@@ -25,6 +25,7 @@ namespace GeekShopping.Web.Services
         public async Task<CartViewModel> AddItemToCart(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var JSON = System.Text.Json.JsonSerializer.Serialize(model);
             var response = await _client.PostAsJson($"{BasePath}/add-cart", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartViewModel>();
@@ -34,6 +35,7 @@ namespace GeekShopping.Web.Services
         public async Task<CartViewModel> UpdateCart(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var JSON = System.Text.Json.JsonSerializer.Serialize(model);
             var response = await _client.PutAsJson($"{BasePath}/update-cart", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartViewModel>();
@@ -52,6 +54,7 @@ namespace GeekShopping.Web.Services
         public async Task<bool> ApplyCoupon(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var JSON = System.Text.Json.JsonSerializer.Serialize(model);
             var response = await _client.PostAsJson($"{BasePath}/apply-coupon", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<bool>();

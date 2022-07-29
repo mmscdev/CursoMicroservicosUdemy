@@ -66,15 +66,29 @@ namespace GeekShopping.CartAPI.Repository
 
         public async Task<CartVO> FindCartByUserId(string userId)
         {
-            Cart cart = new()
+            try
             {
-                CartHeader = await _context.CartHeaders
-                    .FirstOrDefaultAsync(c => c.UserId == userId),
-            };
-            cart.CartDetails = _context.CartDetails
-                .Where(c => c.CartHeaderId == cart.CartHeader.Id)
-                    .Include(c => c.Product);
-            return _mapper.Map<CartVO>(cart);
+                var t = await _context.CartHeaders
+                  .FirstOrDefaultAsync(c => c.UserId == userId);
+
+                var headers = await _context.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+
+                Cart cart = new()
+                {
+                    CartHeader = headers
+                };
+
+                var ids = _context.CartHeaders.Where(c => c.UserId == userId).Select(_ => _.Id);
+
+                cart.CartDetails = _context.CartDetails
+                    .Where(c => ids.Contains(c.CartHeaderId))
+                        .Include(c => c.Product);
+
+                return _mapper.Map<CartVO>(cart);
+            }catch(Exception e)
+            {
+                return default(CartVO);
+            }
         }
 
         public async Task<bool> RemoveFromCart(long cartDetailsId)
@@ -110,7 +124,7 @@ namespace GeekShopping.CartAPI.Repository
             //Checks if the product is already saved in the database if it does not exist then save
             var product = await _context.Products.FirstOrDefaultAsync(
                 p => p.Id == vo.CartDetails.FirstOrDefault().ProductId);
-            
+
             if (product == null)
             {
                 _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
@@ -157,7 +171,7 @@ namespace GeekShopping.CartAPI.Repository
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
                     _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
-                } 
+                }
             }
             return _mapper.Map<CartVO>(cart);
         }

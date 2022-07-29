@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GeekShopping.OrderAPI.Repository
+namespace GeekShopping.CartAPI.Repository
 {
     public class OrderRepository : IOrderRepository
     {

@@ -1,6 +1,6 @@
-using GeekShopping.PaymentAPI.MessageConsumer;
 using GeekShopping.PaymentAPI.RabbitMQSender;
 using Microsoft.OpenApi.Models;
+using MM.GeekShopping.PaymentAPI.MessageConsumer;
 using MM.GeekShopping.PaymentProcessor;
 
 var builder = WebApplication.CreateBuilder(args);

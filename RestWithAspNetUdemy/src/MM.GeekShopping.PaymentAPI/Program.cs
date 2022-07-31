@@ -1,6 +1,6 @@
 using GeekShopping.PaymentAPI.MessageConsumer;
+using GeekShopping.PaymentAPI.RabbitMQSender;
 using Microsoft.OpenApi.Models;
-using MM.GeekShopping.PaymentAPI.RabbitMQSender;
 using MM.GeekShopping.PaymentProcessor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 builder.Services.AddSingleton<IProcessPayment, ProcessPayment>();
-builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
+builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthorization(options =>

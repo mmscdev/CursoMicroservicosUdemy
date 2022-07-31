@@ -1,5 +1,5 @@
-﻿using MM.GeekShopping.PaymentAPI.Messages;
-using MM.GeekShopping.PaymentAPI.RabbitMQSender;
+﻿using GeekShopping.PaymentAPI.RabbitMQSender;
+using MM.GeekShopping.PaymentAPI.Messages;
 using MM.GeekShopping.PaymentProcessor;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -60,7 +60,7 @@ namespace GeekShopping.PaymentAPI.MessageConsumer
 
             try
             {
-                _rabbitMQMessageSender.SendMessage(paymentResult, "orderpaymentresultqueue");
+                _rabbitMQMessageSender.SendMessage(paymentResult);
             }
             catch (Exception)
             {
